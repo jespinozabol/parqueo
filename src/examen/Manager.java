@@ -5,7 +5,6 @@
  */
 package examen;
 
-import static com.sun.org.glassfish.external.amx.AMXUtil.prop;
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +27,6 @@ public class Manager {
     private double IngresoTotal;
     private int totalEspacios;
     public Manager(int espacios) {
-        Properties prop = LoadProperties();
         totalEspacios = espacios*espacios;//Integer.parseInt(prop.getProperty("pisos"))* Integer.parseInt(prop.getProperty("espacios"));
         this.Campos = new ArrayList<>();
         for (int i = 0; i < totalEspacios; i++) {
@@ -45,18 +43,6 @@ public class Manager {
         this.Boletas = new ArrayList<>();
     }
     
-    public Properties LoadProperties() {
-        Properties prop = new Properties();
-        InputStream inputStream
-                = Parqueo.class.getResourceAsStream("config.properties");
-        try {
-            prop.load(inputStream);
-        } catch (IOException ex) {
-            Logger.getLogger(Parqueo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return prop;
-    }
-
     public final int Libres(){
         int disponible=0;
         for(int i = 0; i <totalEspacios; i++)

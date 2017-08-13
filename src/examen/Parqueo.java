@@ -5,6 +5,7 @@
  */
 package examen;
 
+import examen.servidorchat.ServidorChat;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.io.BufferedWriter;
@@ -32,7 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sun.security.pkcs11.wrapper.Constants;
 
-public class Parqueo extends javax.swing.JFrame implements Utilidades {
+public class Parqueo extends javax.swing.JFrame {
 
     /**
      * Creates new form Parqueo
@@ -41,6 +42,7 @@ public class Parqueo extends javax.swing.JFrame implements Utilidades {
     private String val;
     Manager Mng;
     public Parqueo(String value) {
+        
         val = value;
         initComponents();
         SetJtEspacios();
@@ -48,12 +50,12 @@ public class Parqueo extends javax.swing.JFrame implements Utilidades {
         jDialog1.setLocationRelativeTo(null);
         Mng = new Manager(Integer.parseInt(val));
         Reloj();
+        new ServidorChat();
     }
 
     private void SetJtEspacios() throws NumberFormatException {
         int value = Integer.parseInt(val);
         Manager m = new Manager(value);
-        Properties prop = m.LoadProperties();        
         columna = value;//prop.getProperty("pisos")!=val?value:Integer.parseInt(prop.getProperty("pisos"));
         fila = value;//prop.getProperty("espacios")!=val?value:Integer.parseInt(prop.getProperty("espacios"));
         
@@ -445,6 +447,7 @@ public class Parqueo extends javax.swing.JFrame implements Utilidades {
                 jtEstacionamiento.setValueAt("Ocupado", fila, columna);
                 estadosEstacionamiento[fila][columna] = estadosEstacionamiento[fila][columna] == "Ocupado" ? "Disponible" : "Ocupado";
                 jDialog1.dispose();
+                sendMessage();
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "la hora va de 0 a 23 y los minutos de 0 a 59");
             }
@@ -591,11 +594,19 @@ public class Parqueo extends javax.swing.JFrame implements Utilidades {
                         jlbLibre.setText("" + Mng.Libres());
                         jlbcosto.setText("" + Mng.getPrecio());
                         jlbhora.setText(formatohora.format(new Date()));
-                        sleep(500);
+                        sleep(500);                        
                     } catch (InterruptedException ex) {
                     }
                 }
             }
         }.start();
+    }
+
+    private void sendMessage() {
+        try {
+            HiloDelCliente hc = new HiloDelCliente(estadosEstacionamiento);
+        } catch (IOException ex) {
+            Logger.getLogger(Parqueo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

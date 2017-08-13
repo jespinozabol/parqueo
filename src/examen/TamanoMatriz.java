@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -86,45 +84,11 @@ public class TamanoMatriz extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String value = this.jTextField1.getText();
-        Properties prop = new Properties();
-	OutputStream output = null;
-
-	try {
-
-		output = new FileOutputStream("src/examen/config.properties");
-
-		// set the properties value
-		
-        prop.setProperty("pisos",value);
-        prop.setProperty("espacios",value);
-
-		// save properties to project root folder
-		prop.store(output, null);
-
-	} catch (IOException io) {
-		io.printStackTrace();
-	} finally {
-		if (output != null) {
-			try {
-				output.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
-        dispose();
-        new Parqueo(value).setVisible(true);// TODO add your handling code here:
+        new Parqueo(value).setVisible(true);
+        dispose();// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TamanoMatriz().setVisible(true);
-
-            }
-        });
-    }
+    
     
     
 
